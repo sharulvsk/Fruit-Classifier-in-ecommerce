@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart - Cosmic Theme</title>
+    <style>
+        /* Body Styling */
+        body {
+            font-family: Arial, sans-serif;
+            background: black;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Universe Background */
+        .universe-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle, rgba(10,10,30,1) 0%, rgba(0,0,0,1) 70%);
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .glitter {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: url('https://example.com/glitter.png') repeat;
+            animation: glitter 15s linear infinite;
+            opacity: 0.1;
+        }
+
+        /* Animated Stars */
+        .star {
+            width: 2px;
+            height: 2px;
+            background: white;
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0;
+            animation: star-glow 5s infinite ease-in-out;
+        }
+
+        /* Animations */
+        @keyframes glitter {
+            from {
+                transform: translateX(0);
+            }
+            to {
+                transform: translateX(-1000px);
+            }
+        }
+
+        @keyframes star-glow {
+            0%, 100% {
+                opacity: 0;
+                transform: scale(0);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.5);
+            }
+        }
+
+        /* Cart Container */
+        .cart-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+            border-radius: 12px;
+        }
+
+        /* Cart Item */
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .cart-item img {
+            width: 100px;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .cart-item-info {
+            flex: 1;
+            margin-left: 15px;
+        }
+
+        .cart-item-info p {
+            margin: 5px 0;
+        }
+
+        /* Buttons */
+        .checkout-btn, .back-button {
+            background: #f8b500;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 16px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+        }
+
+        .checkout-btn:hover, .back-button:hover {
+            background: #ff9f1a;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Total Price */
+        .total {
+            text-align: right;
+            font-size: 18px;
+            margin-top: 20px;
+        }
+
+        /* Fade-in Animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="universe-background">
+        <div class="glitter"></div>
+        <!-- Stars will be added dynamically via JavaScript -->
+    </div>
+
+    <div class="cart-container">
+        <h1>Shopping Cart</h1>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul class="flashes">
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+        {% if cart %}
+            {% for item_id, item in cart.items() %}
+                <div class="cart-item">
+                    <img src="{{ url_for('static', filename='images/' + item.image) }}" alt="{{ item.name }}">
+                    <div class="cart-item-info">
+                        <p><strong>{{ item.name }}</strong></p>
+                        <p>Price: ${{ '%.2f'|format(item.price) }}</p>
+                        <p>Quantity: {{ item.quantity }}</p>
+                        <p>Subtotal: ${{ '%.2f'|format(item.price * item.quantity) }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+            <div class="total">
+                <strong>Total: ${{ '%.2f'|format(total) }}</strong>
+            </div>
+            <a href="/checkout" class="checkout-btn">Proceed to Checkout</a>
+        {% else %}
+            <p>Your cart is empty.</p>
+        {% endif %}
+        <button class="back-button" onclick="window.location.href='/';">Back to Products</button>
+    </div>
+
+    <script>
+        // Create dynamic star effect
+        function createStars() {
+            const universe = document.querySelector('.universe-background');
+            for (let i = 0; i < 200; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.animationDuration = `${Math.random() * 3 + 2}s`;
+                universe.appendChild(star);
+            }
+        }
+        createStars();
+    </script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fruit Store - Home</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom, #f0fff0, #c8f0c8);
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #32a852;
+            padding: 20px;
+            text-align: center;
+            color: white;
+        }
+        .container {
+            padding: 20px;
+        }
+        .featured-product {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 30px;
+        }
+        .product-card {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            width: 250px;
+            text-align: center;
+            transition: transform 0.2s;
+        }
+        .product-card:hover {
+            transform: scale(1.05);
+        }
+        button {
+            background-color: #32a852;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #289444;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome to the Fruit Store</h1>
+        <p>Fresh fruits delivered to your door!</p>
+    </header>
+    <div class="container">
+        <h2>Featured Products</h2>
+        <div class="featured-product">
+            <div class="product-card">
+                <h3>Mango</h3>
+                <p>Sweet and juicy mangoes.</p>
+                <button>Add to Cart</button>
+            </div>
+            <div class="product-card">
+                <h3>Apple</h3>
+                <p>Fresh and crunchy apples.</p>
+                <button>Add to Cart</button>
+            </div>
+            <div class="product-card">
+                <h3>Banana</h3>
+                <p>Ripe bananas full of nutrients.</p>
+                <button>Add to Cart</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

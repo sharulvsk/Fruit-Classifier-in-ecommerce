@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Identify Fruit</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h2 {
+            text-align: center;
+        }
+        input[type="file"] {
+            display: block;
+            margin: 20px auto;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #008080;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #005757;
+        }
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Upload a Fruit Image</h2>
+        <form id="uploadForm" enctype="multipart/form-data">
+            <input type="file" id="imageInput" accept="image/*" required>
+            <button type="submit">Identify Fruit</button>
+        </form>
+        <p id="result"></p>
+    </div>
+    
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData();
+            const fileInput = document.getElementById('imageInput');
+            formData.append('file', fileInput.files[0]);
+
+            fetch('/identify-fruit', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    document.getElementById('result').textContent = data.error;
+                } else {
+                    document.getElementById('result').textContent = `Identified: ${data.name} (Probability: ${(data.probability * 100).toFixed(2)}%)`;
+                }
+            })
+            .catch(error => {
+                document.getElementById('result').textContent = "Error identifying fruit.";
+                console.error(error);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products</title>
+    <style>
+        /* General Body Styling */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: black;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Universe Background */
+        .universe-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle, rgba(10,10,30,1) 0%, rgba(0,0,0,1) 70%);
+        }
+
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.08);
+            width: 100%;
+            padding: 20px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 36px;
+        }
+
+        /* Main Content Area */
+        .content {
+            margin: 50px 0;
+            width: 80%;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+        .content h2 {
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+
+        /* Item Grid */
+        .item-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        .item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            backdrop-filter: blur(5px);
+        }
+        .item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        .item h3 {
+            margin: 0;
+            font-size: 22px;
+            color: #f8b500;
+        }
+        .item p {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        /* Button Styling */
+        button {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #f8b500;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Back Button */
+        .delete-button {
+            margin-top: 30px;
+            background: linear-gradient(135deg, #6f42c1, #9d50bb);
+        }
+        .delete-button:hover {
+            background: linear-gradient(135deg, #9d50bb, #6f42c1);
+        }
+
+        /* Flash Messages */
+        .flashes {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(5px);
+        }
+        .flashes li {
+            list-style-type: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="universe-background"></div>
+    
+    <div class="header">
+        <h1>Products</h1>
+    </div>
+    
+    <div class="content">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul class="flashes">
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+        <h2>Manage Products</h2>
+        <div class="item-grid">
+            {% for item in items %}
+                <div class="item">
+                    <h3>{{ item[1] }}</h3> 
+                    <p>{{ item[2] }}</p> 
+                    <p>Price: ${{ item[3] }}</p>
+                    <p>{{ item[4] }}</p> 
+                    <p>Date: {{ item[5] }}</p>
+                    <div class="item-buttons">
+                        <form action="/add_to_cart" method="POST">
+                            <input type="hidden" name="item_id" value="{{ item[0] }}">
+                            <button type="submit">Add to Cart</button>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>   
+        <button class="delete-button" onclick="window.location.href='/';">Back to Home</button>
+    </div>
+
+</body>
+</html>
